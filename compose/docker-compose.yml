@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  mariadb:
+    image: wodby/mariadb
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_PASSWORD: $TPP_DB_PWD
+      MYSQL_USER: $TPP_DB_USR
+      MYSQL_DATABASE: $TPP_DB_NM
+    networks:
+      tppnet:
+        aliases:
+          - database
+    volumes:
+       - /usr/local/share/tpp/db:/var/lib/mysql
+
+  adminer:
+    image: wodby/adminer
+    depends_on:
+      - mariadb
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: mysql
+      ADMINER_DEFAULT_DB_HOST: 'database'
+      ADMINER_DEFAULT_DB_NAME: $TPP_DB_NM
+      ADMINER_DESIGN: nette
+      ADMINER_PLUGINS: tables-filter tinymce
+    networks:
+      - tppnet
+      - legacy
+
+  tpp:
+    image: comcon1/tppcon
+    environment:
+      MYSQL_PASSWORD: $TPP_DB_PWD
+      MYSQL_USER: $TPP_DB_USR
+      MYSQL_DATABASE: $TPP_DB_NM
+    depends_on:
+      - mariadb
+    command: tail -F /var/log/dpkg.log
+    networks:
+      - tppnet
+    volumes:
+      - /usr/local/share/tpp/work:/work/
+
+networks:
+   tppnet:
+   legacy:
