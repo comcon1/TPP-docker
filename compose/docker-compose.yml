@@ -25,12 +25,13 @@ services:
       ADMINER_DEFAULT_DB_NAME: $TPP_DB_NM
       ADMINER_DESIGN: nette
       ADMINER_PLUGINS: tables-filter tinymce
+    ports:
+      - 9000:9000
     networks:
       - tppnet
-      - legacy
 
   tpp:
-    image: comcon1/tppcon
+    image: comcon1/tppcon:latest
     environment:
       MYSQL_PASSWORD: $TPP_DB_PWD
       MYSQL_USER: $TPP_DB_USR
@@ -45,4 +46,3 @@ services:
 
 networks:
    tppnet:
-   legacy:
