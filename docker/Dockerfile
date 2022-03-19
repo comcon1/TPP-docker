@@ -30,7 +30,7 @@ RUN echo $TZ && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /et
     ./bootstrap.sh && \
     OPENBABEL_CFLAGS=-I/usr/local/openbabel-240/include/openbabel-2.0/ \
      OPENBABEL_LIBS=-Wl,-rpath=/usr/local/openbabel-240/lib \
-     LDFLAGS=-L/usr/local/openbabel-240/lib/ ./configure --enable-debugmode && \
+     LDFLAGS=-L/usr/local/openbabel-240/lib/ ./configure && \
     make -j4 && make install && \
     cd && rm -fr /root/${ZIPF} && \
     apt-get remove -y --purge unzip wget cmake automake build-essential libmysql++-dev && \
