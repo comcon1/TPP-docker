@@ -20,9 +20,10 @@ TPP deployment via docker & docker-compose.
 ```
 ./run-first-time.sh
 ```
+> This script upload the database from `my.sql` file. Please don't ignore this step!
 
 3. Further compose usage
-   1. Use standard `docker-compose down` | `docker-compose up -d` to stop | start containers.
+   1. Use standard `docker-compose stop` | `docker-compose start -d` to stop | start containers.
    2. Verify adminer connect via http://localhost:9000/ using user/password from step 1.
 
 4. Try **tpprenum** on the test file from `./test`:
@@ -42,19 +43,18 @@ docker exec dragon_tpp_1 runtppmktop.sh -i test.pdb -o output.itp -l lack.itp -f
 
 Let your system username is *john*. Then it automatically belongs to group *john* (you can verify it running `groups john`). So you can change group ownership of the folder:
 ```
-sudo chown :john /usr/share/tpp/work
+sudo chown :john /usr/local/share/tpp/work
 ```
 and then allow every group member to write into this folder:
 ```
-sudo chmod g+w /usr/share/tpp/work
+sudo chmod g+w /usr/local/share/tpp/work
 ```
 After these changes you will be able to copy file into this folder without sudo
 ```
-cp file.pdb /usr/share/tpp/work
+cp file.pdb /usr/local/share/tpp/work
 docker exec tpp_1 tpprenum -i file.pdb -o o_file.pdb
 cp o_file.pdb .
 ```
-
 
 ## To rebuild docker image
 
