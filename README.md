@@ -1,7 +1,17 @@
 
-# TPP deployment
+# TPPMKTOP deployment repository
 
-TPP deployment via docker & docker-compose.
+MD topology generation is a very complex task because of huge amount of the atomtypes described this force field. For instance, the OPLS-AA force filed contains more than 800 atom types that is nevertheless not sufficient for describing all the diversity of chemical structures. Thus, as parameters for new chemical fragments appears in literature the atomtype database is also extending. TPPMKOP is an utility developed for the automatic topology generation based on automatic atomtype attribution according to the neighboring of the chemical environment. 
+
+**We strongly recommend to use docker-compose version of TPPMKTOP instead of ERG webserver!**
+
+The web version at server in MSU: http://erg.biophys.msu.ru/tpp/
+
+Core TPPMKTOP container at dockerhub: https://hub.docker.com/r/comcon1/tppcon
+
+TPPMKTOP C++ code: https://github.com/comcon1/TopologyPreProcessor
+
+TPPMKTOP deployment via docker & docker-compose.
 
 ## Getting started with compose
 
