@@ -49,6 +49,15 @@ docker exec dragon_tpp_1 runtppmktop.sh -i test.pdb -o output.itp -l lack.itp -f
 ```
 > Script `runtppmktop.sh` automatically substitutes proper settings of the database connection. You can use `tppmktop` binary directly if you want.
 
+## Getting started with TPP
+
+```
+echo 'CC(CO)CCC(CCC)C[NH3+]' > 1.smi
+obabel -ismi 1.smi -opdb --gen3D -O 1.pdb
+docker exec compose_tpp_1 tpprenum -i 1.pdb -o 1rn.pdb
+docker exec compose_tpp_1 runtppmktop.sh -i 1rn.pdb -o UBB.itp -l lack.itp -f OPLS-AA -v
+```
+
 ## Fix permissions to allow non-root usage
 
 Let your system username is *john*. Then it automatically belongs to group *john* (you can verify it running `groups john`). So you can change group ownership of the folder:

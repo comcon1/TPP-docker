@@ -13,7 +13,12 @@ services:
         aliases:
           - database
     volumes:
-       - /usr/local/share/tpp/db:/var/lib/mysql
+       - ./volume/db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "-u${TPP_DB_USR}", "-p${TPP_DB_PWD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: wodby/adminer
@@ -42,7 +47,7 @@ services:
     networks:
       - tppnet
     volumes:
-      - /usr/local/share/tpp/work:/work/
+      - ./volume/work:/work/
 
 networks:
    tppnet:
