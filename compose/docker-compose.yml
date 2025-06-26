@@ -37,6 +37,7 @@ services:
 
   tpp:
     image: comcon1/tppcon:latest
+    user: "${UID}:${GID}"
     environment:
       MYSQL_PASSWORD: $TPP_DB_PWD
       MYSQL_USER: $TPP_DB_USR
