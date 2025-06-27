@@ -36,6 +36,7 @@ Please don't ignore this step!
 3. Further compose usage
    1. Use standard `docker compose -p tpproject down` | `docker compose -p tpproject up -d` to stop | start containers.
    2. Verify adminer connect via http://localhost:9000/ using user/password from step 1.
+   3. **Note** `docker-compose` creates containers with underscore whereas `docker compose` ccreates them with dashes. Check `docker ps` before you are ready to go.
 
 4. Try **tpprenum** on the test file from `./test`:
 ```
