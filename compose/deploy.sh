@@ -21,7 +21,7 @@ export GID=$(id -g)
 
 ${DOCKER_COMPOSE} -p $PREFIX up -d
 
-MARIA=$(${DOCKER_COMPOSE} -p ${PREFIX} ps --format '{{.Names}}' | grep maria)
+MARIA=$(docker ps --format '{{.Names}}' | grep mariadb | grep ${PREFIX})
 echo "MariaDB container: ${MARIA}"
 
 while true; do
