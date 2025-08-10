@@ -2,16 +2,16 @@
 # Dockerfile for tppcon
 # Base image   : ubuntu:20.04
 # Maintainer   : Alexey Nesterenko <comcon1@protonmail.com>
-# Description  : For running TPPMKTOP with all dependencies installed
-# Version      : 0.3.0
+# Description  : Base image to faster derive in TPPMKTOP devcontainer
+# Version      : 0.3.0-devbase
 # Created      : 2025-08-10
 # ------------------------------------------------------------------------------
 
 FROM ubuntu:20.04
 
 LABEL org.opencontainers.image.title="tppcon" \
-      org.opencontainers.image.description="Container for running TPPMKTOP" \
-      org.opencontainers.image.version="0.3.0" \
+      org.opencontainers.image.description="Container for developing TPPMKTOP" \
+      org.opencontainers.image.version="0.3.0-devbase" \
       org.opencontainers.image.url="https://hub.docker.com/r/comcon1/tppcon" \
       org.opencontainers.image.source="https://github.com/comcon1/TPP-docker" \
       org.opencontainers.image.licenses="GPLv3" \
@@ -24,7 +24,18 @@ RUN echo $TZ && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /et
     apt-get install -y locales && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen && \
-    apt-get install -y tzdata wget unzip cmake build-essential automake git && \
+    apt-get install -y \
+        tzdata \
+        wget \
+        unzip \
+        cmake \
+        build-essential \
+        autotools-dev \
+        autoconf \
+        automake \
+        libtool \
+        git \
+        vim && \
     cd && \
     wget https://github.com/openbabel/openbabel/archive/refs/tags/openbabel-2-4-0.zip && \
     unzip openbabel-2-4-0.zip && \
@@ -42,42 +53,13 @@ RUN echo $TZ && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /et
     apt-get install -y libmysql++-dev && \
     apt-get install -y libboost1.71-dev libboost-thread1.71-dev libboost-filesystem1.71-dev \
     		   libboost-program-options1.71-dev libboost-regex1.71-dev libboost-log1.71-dev && \
-    git clone --branch v0.3.0 --depth 1 https://github.com/comcon1/TopologyPreProcessor.git && \
-    cd TopologyPreProcessor && \
-    ./bootstrap.sh && \
-    OPENBABEL_CFLAGS=-I/usr/local/openbabel-240/include/openbabel-2.0/ \
-     OPENBABEL_LIBS=-Wl,-rpath=/usr/local/openbabel-240/lib \
-     LDFLAGS=-L/usr/local/openbabel-240/lib/ ./configure && \
-    make -j4 && make install && \
-    cd && rm -fr /root/TopologyPreProcessor && \
-    apt-get remove -y --purge unzip wget cmake automake build-essential libmysql++-dev git && \
-    apt-get remove -y --purge libboost1.71-dev libboost-thread1.71-dev libboost-filesystem1.71-dev \
-    		   libboost-program-options1.71-dev libboost-regex1.71-dev libboost-log1.71-dev && \
+    apt-get install -y vim gdb && \
     apt-get -y autoremove --purge && apt-get clean && apt-get purge && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir /work
-
+    rm -rf /var/lib/apt/lists/*
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
-COPY runtppmktop.sh /usr/bin/
-
-VOLUME ["/work"]
-
-WORKDIR /work
-
 CMD ["/bin/bash"]
-
-# @TODO: remove unused modules!
-# (still not tested)
-# 
-#    cd /usr/local/openbabel-240/lib/openbabel/2.4.0 && \
-#    mkdir ~/tmp && mv *format.so ~/tmp && \
-#    mv ~/tmp/pdbformat.so . && \
-#    mv ~/tmp/groformat.so . && \
-#    mv ~/tmp/gromos96format.so . && \
-#    mv ~/tmp/xyzformat.so . && \
-#    rm -fr ~/tmp && \ 
 
