@@ -2,8 +2,10 @@ version: "3"
 
 services:
   mariadb:
-    image: wodby/mariadb
+    image: lscr.io/linuxserver/mariadb:latest
     environment:
+      PUID: "${dUID}"
+      PGID: "${dGID}"
       MYSQL_RANDOM_ROOT_PASSWORD: 1
       MYSQL_PASSWORD: $TPP_DB_PWD
       MYSQL_USER: $TPP_DB_USR
@@ -13,7 +15,7 @@ services:
         aliases:
           - database
     volumes:
-       - ./volume/db:/var/lib/mysql
+       - ./volume/db:/config
     healthcheck:
       test: ["CMD", "mariadb-admin", "-u${TPP_DB_USR}", "-p${TPP_DB_PWD}", "ping"]
       interval: 10s
@@ -22,6 +24,7 @@ services:
 
   adminer:
     image: wodby/adminer
+    user: "${dUID}:${dGID}"
     depends_on:
       - mariadb
     environment:
@@ -37,7 +40,7 @@ services:
 
   tpp:
     image: comcon1/tppcon:latest
-    user: "${UID}:${GID}"
+    user: "${dUID}:${dGID}"
     environment:
       MYSQL_PASSWORD: $TPP_DB_PWD
       MYSQL_USER: $TPP_DB_USR

@@ -16,8 +16,8 @@ mkdir -p volume/db
 mkdir -p volume/work
 
 # fixing permissions for current user to use 'volume/work' folder
-export UID=$(id -u)
-export GID=$(id -g)
+export dUID=$(id -u)
+export dGID=$(id -g)
 
 ${DOCKER_COMPOSE} -p $PREFIX up -d
 
